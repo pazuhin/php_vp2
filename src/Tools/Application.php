@@ -1,4 +1,5 @@
 <?php
+
 class Application
 {
     public function __construct()
@@ -12,12 +13,12 @@ class Application
 
     protected function loader()
     {
-        require_once SRC_DIRECTORY.  '/Tools/Session.php';
-        require_once SRC_DIRECTORY.  '/Tools/Render.php';
-        require_once SRC_DIRECTORY.  '/Models/BaseModel.php';
-        require_once SRC_DIRECTORY.  '/Models/Users.php';
-        require_once SRC_DIRECTORY.  '/Controllers/BaseControllers.php';
-        require_once SRC_DIRECTORY.  '/Controllers/AdminControllers.php';
+        require_once SRC_DIRECTORY . '/Tools/Session.php';
+        require_once SRC_DIRECTORY . '/Tools/Render.php';
+        require_once SRC_DIRECTORY . '/Models/BaseModel.php';
+        require_once SRC_DIRECTORY . '/Models/Users.php';
+        require_once SRC_DIRECTORY . '/Controllers/BaseControllers.php';
+        require_once SRC_DIRECTORY . '/Controllers/AdminControllers.php';
     }
 
     protected function session()
@@ -34,6 +35,7 @@ class Application
 
     public function run()
     {
+        echo $_SERVER["REQUEST_URI"];
         if ($_SERVER["REQUEST_URI"] == "/admin") {
             $controllers = new AdminControllers();
             $controllers->index();
@@ -41,19 +43,26 @@ class Application
         } elseif ($_SERVER["REQUEST_URI"] == "/login" && !empty($_POST)) {
             $controllers = new AdminControllers();
             $controllers->login();
-            var_dump(1);
             exit();
         } elseif (strpos($_SERVER["REQUEST_URI"], "/login") === 0) {
             $controllers = new AdminControllers();
             $controllers->form();
-            var_dump(2);
             exit();
         } elseif ($_SERVER["REQUEST_URI"] == "/logout") {
             $controllers = new AdminControllers();
             $controllers->logout();
             exit();
+        } elseif ($_SERVER["REQUEST_URI"] == "/registration") {
+            $controllers = new AdminControllers();
+            $controllers->registrationForm();
+            $controllers->addUsers();
+            exit();
+        } elseif ($_SERVER["REQUEST_URI"] == "/success") {
+            $controllers = new AdminControllers();
+            $controllers->successForm();
+            exit();
         } else {
-            var_dump($_SERVER["REQUEST_URI"]);
+            var_dump(123);
         }
     }
 }

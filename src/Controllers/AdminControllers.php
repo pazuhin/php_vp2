@@ -59,4 +59,38 @@ class AdminControllers extends BaseControllers
         $this->session->logout();
         $this->redirect('/login');
     }
+
+    public function registrationForm()
+    {
+        $this->view->render('reg');
+    }
+
+    public function addUsers()
+    {
+        $userData = [
+            'name' => ucfirst(trim($_POST['name'])),
+            'age' => (trim($_POST['age'])),
+            'description' => (trim($_POST['description'])),
+            'password' => md5(trim($_POST['pass']))
+        ];
+        $this->model->setUser($userData);
+    }
+
+    public function renderError()
+    {
+//        ['error' => 'Такой пользователь уже существует']
+//        $this->view->render('reg', ['error' => 'Такой пользователь уже существует']);
+
+//        $this->redirect('/registration?error=1');
+////        $this->view->render('/reg',[
+////            'error' => !empty($_GET['error'])
+////        ]);
+
+    }
+
+    public function successForm()
+    {
+        //$this->redirect('/success');
+        $this->view->render('success');
+    }
 }

@@ -12,10 +12,13 @@ abstract class BaseControllers
 
     protected $view;
 
+    protected $model;
+
     public function __construct()
     {
         $this->session = new Session();
         $this->view = new Render();
+        $this->model = new Users();
     }
 
     protected function redirect($url)
