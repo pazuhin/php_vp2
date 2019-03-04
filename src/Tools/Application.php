@@ -52,12 +52,17 @@ class Application
             $controllers = new AdminControllers();
             $controllers->logout();
             exit();
-        } elseif ($_SERVER["REQUEST_URI"] == "/registration") {
+        } elseif ($_SERVER["REQUEST_URI"] == "/registration" && !empty($_POST)) {
             $controllers = new AdminControllers();
-            $controllers->registrationForm();
             $controllers->addUsers();
             exit();
-        } elseif ($_SERVER["REQUEST_URI"] == "/success") {
+        } elseif
+        (strpos($_SERVER["REQUEST_URI"], "/registration") === 0) {
+            $controllers = new AdminControllers();
+            $controllers->registrationForm();
+            exit();
+        } elseif
+        ($_SERVER["REQUEST_URI"] == "/success") {
             $controllers = new AdminControllers();
             $controllers->successForm();
             exit();

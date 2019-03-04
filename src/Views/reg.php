@@ -9,18 +9,20 @@
 </head>
 <body>
 <h1>Sign Up Form</h1>
-<?php if (!empty($error)) : ?>
-    <div class="alert alert-danger" role="alert">
-        324234234324
-    </div>
-<?php endif; ?>
+<?php
+if ($_GET['errors'] == 2) {
+    echo '<div>';
+    echo 'Пользователь с такими данными уже есть в системе';
+    echo '</div>';
+}
+?>
 
 <div id="wrapper">
-    <form id="signUp" method="post" action="" autocomplete="off">
-        <input type="text" id="name" name="name" placeholder="username" required/>
+    <form id="signUp" method="post" action="/registration" autocomplete="off">
+        <input type="text" id="name" name="login" placeholder="username" required/>
         <input type="text" id="age" name="age" placeholder="age" required/>
         <input type="text" id="description" name="description" placeholder="description" required/>
-        <input type="password" id="pass" name="pass" placeholder="password" required/>
+        <input type="password" id="pass" name="password" placeholder="password" required/>
         <button type="submit">&#xf0da;</button>
     </form>
 </div>

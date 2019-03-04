@@ -22,8 +22,8 @@ $regForm = '/src/Views/reg.php';
 <?php endif; ?>
 <div id="wrapper">
     <form id="signin" method="post" action="/login" autocomplete="off">
-        <input type="text" id="login" name="login" placeholder="username"/>
-        <input type="password" id="password" name="password" placeholder="password"/>
+        <input type="text" id="login" name="login" placeholder="username" required/>
+        <input type="password" id="password" name="password" placeholder="password" required/>
         <button type="submit">&#xf0da;</button>
         <p>forgot your password? <a href="#">click here</a></p>
         <a class="link" href="/registration">go to the registration form</a>
