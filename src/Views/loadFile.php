@@ -11,20 +11,17 @@
     <title>Admin</title>
 </head>
 <body>
-
-
 <div class="container">
+    <a href="/admin/update">Профиль</a> /
     <a href="/admin/update">Отредактировать профиль</a> /
     <a href="/admin/load">Загрузить изображение</a> /
     <a href="/admin/images">Список загруженных фото</a> /
     <a href="/admin/show">Все пользователи</a> /
     <a href="/logout">Выход</a>
-    <div class="row">
-        <div class="col-sm">
-            <h1>Ваш личный кабинет</h1>
-            <p>Добрый день, пользователь <?= $user ?></p>
-        </div>
-    </div>
+    <form style="margin-top: 50px" action="/admin/load" method="post" enctype="multipart/form-data">
+        <input style="margin-bottom: 30px" type="file" name="filename"><br>
+        <input type="submit" name="upload" value="Загрузить"><br>
+    </form>
 </div>
 
 <!-- Optional JavaScript -->

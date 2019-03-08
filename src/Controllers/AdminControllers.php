@@ -38,15 +38,14 @@ class AdminControllers extends BaseControllers
             throw InvalidArgumentException();
         }
 
-        $login = strtoupper(trim($_POST['login']));
+        //$login = strtoupper(trim($_POST['login']));
         $check = $this->checkUser();
-        var_dump($check);
-        if (!$check) {
+        if ($check < 1) {
             var_dump($check);
             $this->redirect('/login?error=1');
             var_dump($check);
         }
-        $userId = $login;
+        $userId = $check;
 
         $this->session->login($userId);
         $this->redirect('/admin');
@@ -70,15 +69,26 @@ class AdminControllers extends BaseControllers
             'name' => ucfirst(trim($_POST['login'])),
             'age' => (trim($_POST['age'])),
             'description' => (trim($_POST['description'])),
-            'password' => md5(trim($_POST['password']))
+            'password' => md5(trim($_POST['password'])),
+            'file' => $_FILES['image']['name']
         ];
         $check = $this->checkUser();
         if ($check) {
             $this->redirect('/registration?errors=2');
         }
-
         $this->model->setUser($userData);
+        $lastUserId = $this->model->getLastId();
+        $this->saveToUploads();
+        $this->loadFromRegToDb($lastUserId);
         $this->redirect('/success');
+    }
+
+    public function saveToUploads()
+    {
+        if (!empty($_FILES['image']['tmp_name'])) {
+            $fileContent = file_get_contents($_FILES['image']['tmp_name']);
+            file_put_contents('../public/uploads/' . $_FILES['image']['name'] . '.jpg', $fileContent);
+        }
     }
 
     public function checkUser()
@@ -89,7 +99,7 @@ class AdminControllers extends BaseControllers
         ];
         $checkUser = $this->model->getUser($checkData);
         if ($checkUser) {
-            return true;
+            return $checkUser;
         } else {
             return null;
         }
@@ -98,5 +108,35 @@ class AdminControllers extends BaseControllers
     public function successForm()
     {
         $this->view->render('success');
+    }
+
+    public function loadFromRegToDb($lastUserId)
+    {
+        $fileName = $_FILES['image']['name'];
+        $this->file->saveToDb($lastUserId, $fileName);
+    }
+
+    public function listUsers()
+    {
+        $this->view->render('listUsers', ['usersList' => $this->model->getAll()]);
+    }
+
+    public function listImages()
+    {
+        $this->view->render('imageList', ['imageList' => $this->file->getImages($this->session->getUser())]);
+    }
+
+    public function loadFileFromAdmin()
+    {
+        $this->view->render('/loadFile');
+        if (isset($_POST['upload'])) {
+            $image = $_FILES['filename']['name'];
+            $this->file->loadImage($image, $this->session->getUser());
+        }
+    }
+
+    public function notFound()
+    {
+        $this->view->render('404');
     }
 }

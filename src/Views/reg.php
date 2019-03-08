@@ -18,11 +18,12 @@ if ($_GET['errors'] == 2) {
 ?>
 
 <div id="wrapper">
-    <form id="signUp" method="post" action="/registration" autocomplete="off">
+    <form id="signUp" method="post" action="/registration" enctype="multipart/form-data" autocomplete="off">
         <input type="text" id="name" name="login" placeholder="username" required/>
         <input type="text" id="age" name="age" placeholder="age" required/>
         <input type="text" id="description" name="description" placeholder="description" required/>
         <input type="password" id="pass" name="password" placeholder="password" required/>
+        <input type="file" id="file" name="image" required/>
         <button type="submit">&#xf0da;</button>
     </form>
 </div>
@@ -80,10 +81,13 @@ if ($_GET['errors'] == 2) {
         border-bottom-right-radius: 8px;
         border-bottom-left-radius: 8px;
     }
-    #signUp  input[type="text"], #signUp input[type="password"], #signUp button[type="submit"]{
+    #signUp  input[type="text"], #signUp input[type="password"], #signUp button[type="submit"], #signUp input[type="file"]{
         background: rgb(28, 30, 33);
         box-shadow: inset -100px -100px 0 rgb(28, 30, 33); /*Prevent yellow autofill color*/
         color: rgb(52, 56, 61);
+    }
+    #signUp input[type="file"] {
+        width: 280px;
     }
     #signUp  input[type="text"], #signUp  input[type="password"]{
         position: relative;

@@ -1,4 +1,4 @@
 <?php
-echo 'Вы успешно зарегестировались';
+echo 'Вы успешно зарегестировались' . '<br>';
 ?>
-<a style="color: aliceblue; text-decoration: none" href="/login">Вернутсья на форму авторизации</a>
+<a style="color: black; text-decoration: underline; margin-top: 50px; display: block;" href="/login">Вернутсья на форму авторизации</a>
