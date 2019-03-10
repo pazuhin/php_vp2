@@ -15,13 +15,13 @@
 
 <div class="container">
     <a href="/admin">Профиль</a> /
-    <a href="/admin/update">Отредактировать профиль</a> /
+    <a href="/admin/create">Добавить нового пользователя</a> /
     <a href="/admin/load">Загрузить изображение</a> /
     <a href="/admin/images">Список загруженных фото</a> /
     <a href="/admin/show">Все пользователи</a> /
     <a href="/logout">Выход</a>
     <div class="row">
-        <table style="width:100%">
+        <table style="width:50%">
             <tr>
                 <th>Name</th>
                 <th>Image</th>
@@ -58,7 +58,7 @@
     }
 
     th, td {
-        padding: 15px;
+        padding: 5px;
         text-align: left;
     }
 </style>

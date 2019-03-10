@@ -29,14 +29,11 @@ class Application
 
     protected function db()
     {
-        require_once SRC_DIRECTORY . '/Tools/Config.php';
-        $db = $appConfig['db'];
-        BaseModel::init($db);
+        BaseModel::setConnection();
     }
 
     public function run()
     {
-        echo $_SERVER["REQUEST_URI"];
         if ($_SERVER["REQUEST_URI"] == "/admin") {
             $controllers = new AdminControllers();
             $controllers->index();
@@ -49,17 +46,19 @@ class Application
         } elseif (strpos($_SERVER["REQUEST_URI"], "/login") === 0) {
             var_dump(123);
             $controllers = new AdminControllers();
-            $controllers->form();
+            $controllers->form('login');
             exit();
         } elseif ($_SERVER["REQUEST_URI"] == "/logout") {
             $controllers = new AdminControllers();
             $controllers->logout();
             exit();
         } elseif ($_SERVER["REQUEST_URI"] == "/registration" && !empty($_POST)) {
+            var_dump(555);
             $controllers = new AdminControllers();
             $controllers->addUsers();
             exit();
         } elseif (strpos($_SERVER["REQUEST_URI"], "/registration") === 0) {
+            var_dump(777);
             $controllers = new AdminControllers();
             $controllers->registrationForm();
             exit();
@@ -78,6 +77,18 @@ class Application
         } elseif ($_SERVER["REQUEST_URI"] == "/admin/images") {
             $controllers = new AdminControllers();
             $controllers->listImages();
+            exit();
+        } elseif (strpos($_SERVER["REQUEST_URI"], "/admin/update") === 0) {
+            $controllers = new AdminControllers();
+            $controllers->editUser();
+            exit();
+        } elseif ($_SERVER["REQUEST_URI"] == "/admin/create") {
+            $controllers = new AdminControllers();
+            $controllers->createUser();
+            exit();
+        } elseif (strpos($_SERVER["REQUEST_URI"], "/admin/create") === 0) {
+            $controllers = new AdminControllers();
+            $controllers->form('create');
             exit();
         } else {
             $controllers = new AdminControllers();

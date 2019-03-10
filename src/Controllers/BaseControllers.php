@@ -20,7 +20,7 @@ abstract class BaseControllers
     {
         $this->session = new Session();
         $this->view = new Render();
-        $this->model = new Users();
+        $this->model = new User();
         $this->file = new File();
     }
 

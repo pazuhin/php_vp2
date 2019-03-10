@@ -12,41 +12,21 @@
     <title>Admin</title>
 </head>
 <body>
-
+<h3>Edit profile</h3>
 <div class="container">
     <a href="/admin">Профиль</a> /
     <a href="/admin/create">Добавить нового пользователя</a> /
     <a href="/admin/load">Загрузить изображение</a> /
-    <a href="/admin/load">Список загруженных фото</a> /
+    <a href="/admin/images">Список загруженных фото</a> /
     <a href="/admin/show">Все пользователи</a> /
     <a href="/logout">Выход</a>
-    <div class="row">
-        <table style="width:50%">
-            <tr>
-                <th>Name</th>
-                <th>Age</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-            <?php
-
-            foreach ($usersList as $user) {
-                if ($user['age'] >= 18) {
-                    $status = 'Совершеннолетний';
-                } else {
-                    $status = 'Несовершеннолетний';
-                }
-                print '<tr>
-                    <td>' . $user['name'] . '</td>
-                    <td>' . $user['age'] . '</td>
-                    <td>' . $status . '</td>
-                    <td><a href="/admin/update?id=' . $user['id'] . '">edit</a></td>
-                 </tr>';
-            }
-            ?>
-    </div>
 </div>
-
+<form style="margin: 54px 500px;" action="/admin/update?id=<?= $userId ?>" method="post">
+    Name <input style="display: flex;" type="text" name="name"/> <br>
+    Password <input style="display: flex;" type="text" name="password"/> <br>
+    Info <input style="display: flex;" type="text" id="description" name="description"/><br>
+    <input type="submit" name="enter">
+</form>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -60,19 +40,3 @@
         crossorigin="anonymous"></script>
 </body>
 </html>
-<style>
-    table, th, td {
-        border: 1px solid black;
-        border-collapse: collapse;
-        margin-top: 50px;
-    }
-
-    th, td {
-        padding: 5px;
-        text-align: left;
-    }
-
-    th {
-        width: 80px;
-    }
-</style>

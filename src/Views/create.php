@@ -12,41 +12,27 @@
     <title>Admin</title>
 </head>
 <body>
-
+<?php
+if (!empty($error)) : ?>
+    <div class="alert alert-danger" role="alert">
+        Неверный логин или пароль
+    </div>
+<?php endif; ?>
 <div class="container">
     <a href="/admin">Профиль</a> /
-    <a href="/admin/create">Добавить нового пользователя</a> /
     <a href="/admin/load">Загрузить изображение</a> /
-    <a href="/admin/load">Список загруженных фото</a> /
+    <a href="/admin/images">Список загруженных фото</a> /
     <a href="/admin/show">Все пользователи</a> /
     <a href="/logout">Выход</a>
-    <div class="row">
-        <table style="width:50%">
-            <tr>
-                <th>Name</th>
-                <th>Age</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-            <?php
-
-            foreach ($usersList as $user) {
-                if ($user['age'] >= 18) {
-                    $status = 'Совершеннолетний';
-                } else {
-                    $status = 'Несовершеннолетний';
-                }
-                print '<tr>
-                    <td>' . $user['name'] . '</td>
-                    <td>' . $user['age'] . '</td>
-                    <td>' . $status . '</td>
-                    <td><a href="/admin/update?id=' . $user['id'] . '">edit</a></td>
-                 </tr>';
-            }
-            ?>
-    </div>
 </div>
-
+<form id="create" method="post" action="/admin/create" enctype="multipart/form-data" autocomplete="off">
+    <input type="text" id="name" name="login" placeholder="username" required/>
+    <input type="text" id="age" name="age" placeholder="age" required/>
+    <input type="text" id="description" name="description" placeholder="description" required/>
+    <input type="password" id="pass" name="password" placeholder="password" required/>
+    <input type="file" id="file" name="image" required/>
+    <button type="submit" name="save">Сохранить</button>
+</form>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -61,18 +47,14 @@
 </body>
 </html>
 <style>
-    table, th, td {
-        border: 1px solid black;
-        border-collapse: collapse;
+    form {
+        display: flex;
+       flex-direction: column;
+        margin-left: 500px;
         margin-top: 50px;
     }
-
-    th, td {
-        padding: 5px;
-        text-align: left;
-    }
-
-    th {
-        width: 80px;
+    input, button {
+        width: 200px;
+        margin-bottom: 10px;
     }
 </style>

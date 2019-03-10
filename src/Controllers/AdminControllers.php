@@ -2,9 +2,7 @@
 
 class AdminControllers extends BaseControllers
 {
-    /**
-     * личный кабинет
-     */
+
     public function index()
     {
         if ($this->session->isGuest()) {
@@ -19,13 +17,10 @@ class AdminControllers extends BaseControllers
         );
     }
 
-    /**
-     * Только форма
-     */
-    public function form()
+    public function form($tamplateName)
     {
         $this->view->render(
-            'login',
+            $tamplateName,
             [
                 'error' => !empty($_GET['error'])
             ]
@@ -38,12 +33,10 @@ class AdminControllers extends BaseControllers
             throw InvalidArgumentException();
         }
 
-        //$login = strtoupper(trim($_POST['login']));
         $check = $this->checkUser();
+
         if ($check < 1) {
-            var_dump($check);
-            $this->redirect('/login?error=1');
-            var_dump($check);
+            return $this->redirect('/login?error=1');
         }
         $userId = $check;
 
@@ -66,18 +59,17 @@ class AdminControllers extends BaseControllers
     public function addUsers()
     {
         $userData = [
-            'name' => ucfirst(trim($_POST['login'])),
+            'name' => ($_POST['login']),
             'age' => (trim($_POST['age'])),
             'description' => (trim($_POST['description'])),
-            'password' => md5(trim($_POST['password'])),
+            'password' => trim($_POST['password']),
             'file' => $_FILES['image']['name']
         ];
         $check = $this->checkUser();
         if ($check) {
             $this->redirect('/registration?errors=2');
         }
-        $this->model->setUser($userData);
-        $lastUserId = $this->model->getLastId();
+        $lastUserId = $this->model->createUser($userData);
         $this->saveToUploads();
         $this->loadFromRegToDb($lastUserId);
         $this->redirect('/success');
@@ -97,12 +89,11 @@ class AdminControllers extends BaseControllers
             'name' => ucfirst(trim($_POST['login'])),
             'password' => md5(trim($_POST['password']))
         ];
-        $checkUser = $this->model->getUser($checkData);
-        if ($checkUser) {
-            return $checkUser;
-        } else {
-            return null;
+        $userId = $this->model->getUserId($checkData);
+        if ($userId) {
+            return $userId;
         }
+        return null;
     }
 
     public function successForm()
@@ -113,7 +104,7 @@ class AdminControllers extends BaseControllers
     public function loadFromRegToDb($lastUserId)
     {
         $fileName = $_FILES['image']['name'];
-        $this->file->saveToDb($lastUserId, $fileName);
+        $this->file->loadImageFromReg($fileName, $lastUserId);
     }
 
     public function listUsers()
@@ -134,6 +125,45 @@ class AdminControllers extends BaseControllers
             $this->file->loadImage($image, $this->session->getUser());
         }
     }
+
+    public function editUser()
+    {
+        $currentId = $_GET['id'];
+        $this->view->render('update', ['userId' => $currentId]);
+
+        if (isset($_POST['enter'])) {
+            $newUser = [
+                'name' => trim($_POST['name']),
+                'password' => trim($_POST['password']),
+                'info' => trim($_POST['description'])
+            ];
+            if (isset($currentId)) {
+                $this->model->updateUser($currentId, $newUser);
+            }
+        }
+    }
+
+    public function createUser()
+    {
+        $this->view->render('create');
+        if (isset($_POST['save'])) {
+            $userData = [
+                'name' => ($_POST['login']),
+                'age' => (trim($_POST['age'])),
+                'description' => (trim($_POST['description'])),
+                'password' => trim($_POST['password']),
+                'file' => $_FILES['image']['name']
+            ];
+            $check = $this->checkUser();
+            if ($check) {
+                $this->redirect('/admin/create?error=3');
+            }
+            $lastUserId = $this->model->createUser($userData);
+            $this->saveToUploads();
+            $this->loadFromRegToDb($lastUserId);
+        }
+    }
+
 
     public function notFound()
     {

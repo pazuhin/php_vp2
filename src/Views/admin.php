@@ -14,7 +14,7 @@
 
 
 <div class="container">
-    <a href="/admin/update">Отредактировать профиль</a> /
+    <a href="/admin/create">Добавить нового пользователя</a> /
     <a href="/admin/load">Загрузить изображение</a> /
     <a href="/admin/images">Список загруженных фото</a> /
     <a href="/admin/show">Все пользователи</a> /

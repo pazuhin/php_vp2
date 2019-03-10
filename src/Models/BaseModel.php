@@ -1,25 +1,25 @@
 <?php
 
+use Illuminate\Database\Capsule\Manager as Capsule;
+
 abstract class BaseModel
 {
-    /**
-     * @var PDO
-     */
-    protected static $pdo;
-
-    public function __construct()
+    public static function setConnection()
     {
-        if (self::$pdo === null) {
-            throw new RuntimeException('Not setup data for db');
-        }
-    }
-
-    public static function init($config)
-    {
-        self::$pdo = new PDO(
-            'mysql:host=' . $config['host'] . ';dbname=' . $config['dbname'],
-            $config['username'],
-            $config['password']
-        );
+        $connect = require(__DIR__ . '/../Tools/config.php');
+        $db = $connect['db'];
+        $capsule = new Capsule;
+        $capsule->addConnection([
+            'driver'    => 'mysql',
+            'host'      => $db['host'],
+            'database'  => $db['dbname'],
+            'username'  => $db['username'],
+            'password'  => $db['password'],
+            'charset'   => $db['charset'],
+            'collation' => $db['collation'],
+            'prefix'    => '',
+        ]);
+        // Setup the Eloquent ORM
+        $capsule->bootEloquent();
     }
 }
